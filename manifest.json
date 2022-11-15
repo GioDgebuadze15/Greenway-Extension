@@ -1,0 +1,25 @@
+{
+    "name": "Gelios Service Extension",
+    "version": "1.0",
+    "description": "Tech Inspect Filter",
+    "manifest_version": 3,
+    "permissions": [
+        "tabs",
+        "storage",
+        "activeTab",
+        "scripting",
+        "nativeMessaging",
+        "unlimitedStorage",
+        "webRequest",
+        "webNavigation"
+    ],
+    "host_permissions": [
+        "https://*.greenway.ge/*"
+    ],
+    "background": {
+        "service_worker": "background.js"
+    },
+    "action": {
+        "default_popup": "popup.html"
+    }
+}
