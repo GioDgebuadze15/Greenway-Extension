@@ -22,6 +22,7 @@ function sendGETRequest() {
       chrome.storage.sync.set({ "index": 0 });
       chrome.storage.local.set({ "data": data });
       chrome.storage.sync.set({ "currentData": data[0] });
+      chrome.runtime.sendMessage({ message: "writeCarNumber" });
     })
     .catch((error) => {
       console.log(error);
@@ -36,7 +37,6 @@ async function startButton_clickHandler() {
   if(index === undefined){
     sendGETRequest();
   }
-  chrome.runtime.sendMessage({ message: "writeCarNumber" });
 
 }
 

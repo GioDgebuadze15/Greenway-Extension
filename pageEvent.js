@@ -53,8 +53,9 @@ async function scrapePopup() {
                         chrome.runtime.sendMessage({ message: "writeCarNumber" });
                     }
                 }
-            }else{
-                swal = document.getElementsByClassName("swal-modal")[0];
+            }
+            else{
+                swal = document.getElementsByClassName("stoped-service")[0];
                 if(swal !== null && swal !== undefined){
                     clearInterval(cancelInterval);
                     refreshPage();
