@@ -1,4 +1,4 @@
-function getCurrentData(){
+function getCurrentData() {
     return new Promise((resolve) => {
         chrome.storage.sync.get("currentData", (value) => {
             resolve(value["currentData"]);
@@ -20,9 +20,18 @@ function sendPutRequest(newData) {
 }
 
 
-async function todo() {
-    const div = document.getElementsByClassName("inspection-result-alert")[0];
-    if (div !== undefined) {
+async function scrapePopup() {
+    var div = null;
+    var cancelInterval = setInterval(() => {
+        div = document.getElementsByClassName("inspection-result-alert")[0];
+        if (div !== null && div !== undefined) {
+            clearInterval(cancelInterval);
+        }
+    }, 100);
+    console.log(div);
+    if (div !== null) {
+        console.log("plplpllp");
+        console.log(div);
         const innerDiv = document.getElementsByClassName("inspection-result")[0];
         const lastInspectedDate = innerDiv.children[1]
             .innerText.trim();
@@ -42,8 +51,9 @@ async function todo() {
                 chrome.runtime.sendMessage({ message: "writeCarNumber" });
             }
         }
-    } else {
-            chrome.runtime.sendMessage({ message: "writeCarNumber" });
-    }
+    } 
+    // else {
+    //     chrome.runtime.sendMessage({ message: "writeCarNumber" });
+    // }
 }
-todo();
+scrapePopup();

@@ -31,7 +31,20 @@ async function getCarData() {
   })
 }
 
-async function todo() {
+function checkForError() {
+  const error = document.getElementById("RegistrationNumber-error");
+  if (error === null) {
+    chrome.runtime.sendMessage({ message: "startSearching" });
+  } else {
+    updateIndex();
+    writeCarNumber();
+  }
+}
+
+
+
+
+async function writeCarNumber() {
   const input = document.getElementById("RegistrationNumber");
   const index = await getCurrentIndex();
   const data = await getCarData();
@@ -49,19 +62,15 @@ async function todo() {
   setCurrentData(data[index]);
 
   const button = document.getElementsByClassName("submit_car_info")[0];
-
   button.click();
-  const errorValidation = document.getElementsByClassName("input-validation-error")[0];
-  if (errorValidation === undefined) {
-    if (input !== undefined && button !== undefined) {
-      chrome.runtime.sendMessage({ message: "startSearching" });
-    }
-  } else {
-    updateIndex();
-    todo();
-  }
+
+  setTimeout(() => {
+    checkForError();
+  }, 1000);
+
 }
 
-todo();
+writeCarNumber();
+
 
 

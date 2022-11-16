@@ -12,7 +12,7 @@ async function closeTab() {
 }
 
 
-chrome.runtime.onMessage.addListener(async function (request, sender, sendResponse) {
+chrome.runtime.onMessage.addListener(async function listener(request, sender, sendResponse) {
   if (request.message === "writeCarNumber") {
     const tab = await getCurrentTab();
     if (tab !== undefined) {
@@ -45,16 +45,16 @@ chrome.runtime.onMessage.addListener(async function (request, sender, sendRespon
         //     urls: ['<all_urls>'],
         //   }
         // );
-        setTimeout(() => {
+        // setTimeout(() => {
           chrome.scripting.executeScript({
             target: { tabId: id },
             files: ["./pageEvent.js"]
           });
-        }, 2000);
+        // }, 10000);
       }
     }
   } else if (request.message === "closeTab") {
-    // chrome.runtime.onMessage.removeListener(pass listener);
-    await closeTab();
+    chrome.runtime.onMessage.removeListener(listener);
+    //await closeTab();
   }
 });
