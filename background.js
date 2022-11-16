@@ -24,18 +24,29 @@ chrome.runtime.onMessage.addListener(async function listener(request, sender, se
         });
       }
     }
+    chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+      if (changeInfo.status === 'complete' && /greenway\.ge/.test(tab.url)) {
+        chrome.scripting.executeScript({
+          target: { tabId: tabId },
+          files: ["./contentScript.js"]
+        });
+      }
+    });
   } else if (request.message === "startSearching") {
     const tab = await getCurrentTab();
     if (tab !== undefined) {
       if (/greenway\.ge/.test(tab.url)) {
         const id = tab.id;
-          chrome.scripting.executeScript({
-            target: { tabId: id },
-            files: ["./pageEvent.js"]
-          });
+        chrome.scripting.executeScript({
+          target: { tabId: id },
+          files: ["./pageEvent.js"]
+        });
       }
     }
-  } else if (request.message === "closeTab") {
+  } else if (request.message === "refreshPage") {
+
+  }
+  else if (request.message === "closeTab") {
     chrome.runtime.onMessage.removeListener(listener);
     // await closeTab();
   }

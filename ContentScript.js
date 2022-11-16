@@ -31,6 +31,12 @@ async function getCarData() {
   })
 }
 
+function clearStorage() {
+  chrome.storage.sync.remove("index", () => { });
+  chrome.storage.local.remove("data", () => { });
+  chrome.storage.sync.remove("currentData", () => { });
+}
+
 function checkForError() {
   const error = document.getElementById("RegistrationNumber-error");
   if (error === null) {
@@ -53,6 +59,7 @@ async function writeCarNumber() {
     input.value = data[index].name;
   } catch (error) {
     if (index > data.length) {
+      clearStorage();
       chrome.runtime.sendMessage({ message: "closeTab" });
     }
   }

@@ -5,11 +5,15 @@ document.addEventListener('DOMContentLoaded', function () {
   startButton.addEventListener('click', startButton_clickHandler);
 });
 
-function clearStorage() {
-  chrome.storage.sync.remove("index", () => { });
-  chrome.storage.local.remove("data", () => { });
-  chrome.storage.sync.remove("currentData", () => { });
+async function getCurrentIndex() {
+  return new Promise((resolve) => {
+    chrome.storage.sync.get("index", (value) => {
+      resolve(value["index"]);
+    });
+
+  })
 }
+
 
 function sendGETRequest() {
   fetch(URL, { method: "GET", headers: { 'Content-Type': 'application/json' } })
@@ -18,7 +22,6 @@ function sendGETRequest() {
       chrome.storage.sync.set({ "index": 0 });
       chrome.storage.local.set({ "data": data });
       chrome.storage.sync.set({ "currentData": data[0] });
-
     })
     .catch((error) => {
       console.log(error);
@@ -28,9 +31,11 @@ function sendGETRequest() {
 
 
 
-function startButton_clickHandler() {
-  // clearStorage();
-  sendGETRequest();
+async function startButton_clickHandler() {
+  const index = await getCurrentIndex();
+  if(index === undefined){
+    sendGETRequest();
+  }
   chrome.runtime.sendMessage({ message: "writeCarNumber" });
 
 }

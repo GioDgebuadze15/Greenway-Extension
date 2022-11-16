@@ -19,33 +19,48 @@ function sendPutRequest(newData) {
         });
 }
 
+function refreshPage() {
+    window.location.reload();
+    chrome.runtime.sendMessage({ message: "writeCarNumber" });
+}
+
 
 async function scrapePopup() {
     var div = null;
-    var cancelInterval = setInterval(async() => {
-        div = document.getElementsByClassName("inspection-result-alert")[0];
-        if (div !== null) {
-            clearInterval(cancelInterval);
-            const innerDiv = document.getElementsByClassName("inspection-result")[0];
-            const lastInspectedDate = innerDiv.children[1]
-                .innerText.trim();
-            const nextInspectDate = innerDiv.children[2]
-                .innerText.trim()
-                .split(":")[1].trim();
+    var loader = null;
+    var swal = null;
+    var cancelInterval = setInterval(async () => {
+        loader = document.getElementsByClassName("loader-container")[0];
+        if (loader.style.display === 'none') {
+            div = document.getElementsByClassName("inspection-result")[0];
+            if (div !== null && div != undefined) {
+                clearInterval(cancelInterval);
+                const lastInspectedDate = div.children[1]
+                    .innerText.trim();
+                const nextInspectDate = div.children[2]
+                    .innerText.trim()
+                    .split(":")[1].trim();
 
-            if (lastInspectedDate !== undefined && nextInspectDate !== undefined) {
-                let newData = await getCurrentData();
-                newData.lastDate = lastInspectedDate;
-                newData.nextDate = nextInspectDate;
-                sendPutRequest(newData);
+                if (lastInspectedDate !== undefined && nextInspectDate !== undefined) {
+                    let newData = await getCurrentData();
+                    newData.lastDate = lastInspectedDate;
+                    newData.nextDate = nextInspectDate;
+                    sendPutRequest(newData);
 
-                const backBtn = document.getElementsByClassName("alert-close")[0];
-                if (backBtn !== undefined) {
-                    backBtn.click();
-                    chrome.runtime.sendMessage({ message: "writeCarNumber" });
+                    const backBtn = document.getElementsByClassName("alert-close")[0];
+                    if (backBtn !== undefined && backBtn !== null) {
+                        backBtn.click();
+                        chrome.runtime.sendMessage({ message: "writeCarNumber" });
+                    }
+                }
+            }else{
+                swal = document.getElementsByClassName("swal-modal")[0];
+                if(swal !== null && swal !== undefined){
+                    clearInterval(cancelInterval);
+                    refreshPage();
                 }
             }
         }
-    }, 100);
+    }, 300);
 }
 scrapePopup();
