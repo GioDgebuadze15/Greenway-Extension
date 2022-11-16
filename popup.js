@@ -29,7 +29,7 @@ function sendGETRequest() {
 
 
 function startButton_clickHandler() {
-  clearStorage();
+  // clearStorage();
   sendGETRequest();
   chrome.runtime.sendMessage({ message: "writeCarNumber" });
 

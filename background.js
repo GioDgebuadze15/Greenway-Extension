@@ -29,32 +29,14 @@ chrome.runtime.onMessage.addListener(async function listener(request, sender, se
     if (tab !== undefined) {
       if (/greenway\.ge/.test(tab.url)) {
         const id = tab.id;
-        // chrome.webRequest.onCompleted.addListener(
-        //   (details) => {
-        //     console.log(details);
-        //     const url = details.url;
-        //     if (details.method === 'POST' && url.includes('https://greenway.ge/ka/Home/CalculatePrice')) {
-        //       console.log("sending");
-        //       // chrome.scripting.executeScript({
-        //       //   target: { tabId: id },
-        //       //   files: ["./pageEvent.js"]
-        //       // });
-        //     }
-        //   },
-        //   {
-        //     urls: ['<all_urls>'],
-        //   }
-        // );
-        // setTimeout(() => {
           chrome.scripting.executeScript({
             target: { tabId: id },
             files: ["./pageEvent.js"]
           });
-        // }, 10000);
       }
     }
   } else if (request.message === "closeTab") {
     chrome.runtime.onMessage.removeListener(listener);
-    //await closeTab();
+    // await closeTab();
   }
 });
