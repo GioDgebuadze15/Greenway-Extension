@@ -73,7 +73,7 @@ async function writeCarNumber() {
 
   setTimeout(() => {
     checkForError();
-  }, 1000);
+  }, 2000);
 
 }
 

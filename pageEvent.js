@@ -21,7 +21,9 @@ function sendPutRequest(newData) {
 
 function refreshPage() {
     window.location.reload();
-    chrome.runtime.sendMessage({ message: "writeCarNumber" });
+    setTimeout(() => {
+        chrome.runtime.sendMessage({ message: "writeCarNumber" });
+    }, 3000);
 }
 
 

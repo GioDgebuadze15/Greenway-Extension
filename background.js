@@ -24,14 +24,6 @@ chrome.runtime.onMessage.addListener(async function listener(request, sender, se
         });
       }
     }
-    chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-      if (changeInfo.status === 'complete' && /greenway\.ge/.test(tab.url)) {
-        chrome.scripting.executeScript({
-          target: { tabId: tabId },
-          files: ["./contentScript.js"]
-        });
-      }
-    });
   } else if (request.message === "startSearching") {
     const tab = await getCurrentTab();
     if (tab !== undefined) {
