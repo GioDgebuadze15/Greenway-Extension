@@ -60,7 +60,12 @@ async function scrapePopup() {
                 swal = document.getElementsByClassName("stoped-service")[0];
                 if(swal !== null && swal !== undefined){
                     clearInterval(cancelInterval);
-                    refreshPage();
+                    const swalOverLay = document.getElementsByClassName("swal-overlay")[0];
+                    if (swalOverLay !== undefined && swalOverLay !== null) {
+                    swalOverLay.click();
+                    chrome.runtime.sendMessage({ message: "writeCarNumber" });
+                    // refreshPage();
+                    }
                 }
             }
         }
