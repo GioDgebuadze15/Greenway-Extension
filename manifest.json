@@ -1,7 +1,7 @@
 {
-    "name": "Gelios Service Extension",
+    "name": "Greenway Extension",
     "version": "1.0",
-    "description": "Tech Inspect Filter",
+    "description": "Checking tech inspect date of cars from gelios api",
     "manifest_version": 3,
     "permissions": [
         "tabs",
@@ -20,6 +20,18 @@
         "service_worker": "background.js"
     },
     "action": {
-        "default_popup": "popup.html"
+        "default_popup": "popup.html",
+        "default_icon": {
+            "16": "assets/MygpsLogo.png",
+            "32": "assets/MygpsLogo.png",
+            "48": "assets/MygpsLogo.png",
+            "128": "assets/MygpsLogo.png"
+        }
+    },
+    "icons": {
+        "16": "assets/MygpsLogo.png",
+        "32": "assets/MygpsLogo.png",
+        "48": "assets/MygpsLogo.png",
+        "128": "assets/MygpsLogo.png"
     }
 }
