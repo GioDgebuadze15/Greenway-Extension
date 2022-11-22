@@ -20,9 +20,6 @@ function onButtonClick() {
 
 
 const URL = "https://localhost:7245/api/Home";
-document.addEventListener('DOMContentLoaded', function () {
-  startButton.addEventListener('click', startButton_clickHandler);
-});
 
 async function getCurrentIndex() {
   return new Promise((resolve) => {
@@ -32,6 +29,16 @@ async function getCurrentIndex() {
 
   })
 }
+
+async function getDate() {
+  return new Promise((resolve) => {
+    chrome.storage.sync.get("date", (value) => {
+      resolve(value["date"]);
+    });
+
+  })
+}
+
 
 
 function sendGETRequest() {
@@ -57,16 +64,26 @@ async function startButton_clickHandler() {
   const index = await getCurrentIndex();
   if (index === undefined) {
     chrome.storage.sync.set({ "state": state });
+    chrome.storage.sync.set({ "date": Date.now() });
     sendGETRequest();
   } else {
     chrome.runtime.sendMessage({ message: "writeCarNumber" });
   }
   onButtonClick();
-  
+
+}
+
+startButton.onclick = function execute() {
+  startButton_clickHandler();
 }
 
 
-
-
-
-
+setInterval(async () => {
+  const date = new Date(await getDate());
+  const newDate = new Date(Date.now());
+  const diffTime = Math.abs(newDate - date);
+  const diffDays = (diffTime / (1000 * 60 * 60 * 24));
+  if (diffDays >= 1) {
+    startButton.click();
+  }
+}, 1000 * 60 * 60 * 4);
