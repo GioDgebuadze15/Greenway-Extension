@@ -60,7 +60,12 @@ async function writeCarNumber() {
   } catch (error) {
     if (index > data.length) {
       clearStorage();
-      chrome.runtime.sendMessage({ message: "closeTab" });
+      const backBtn = document.getElementsByClassName("alert-close")[0];
+      if (backBtn !== undefined && backBtn !== null) {
+        backBtn.click();
+        chrome.runtime.sendMessage({ message: "closeTab" });
+        return;
+      }
     }
   }
 

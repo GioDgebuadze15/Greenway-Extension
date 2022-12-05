@@ -42,7 +42,6 @@ async function getDate() {
 
 
 function sendGETRequest() {
-  console.log("sss");
   fetch(URL, { method: "GET", headers: { 'Content-Type': 'application/json' } })
     .then(response => response.json())
     .then(data => {
